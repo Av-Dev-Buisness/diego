@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merchandise Chest</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .merch-section {
+            width: 100%;
+            max-width: 1200px;
+            text-align: center;
+        }
+
+        .section-title {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .chest-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .chest-container {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .chest-image {
+            display: block;
+            max-width: 1100px;
+            width: 100%;
+            height: auto;
+            user-select: none;
+            pointer-events: none;
+            image-rendering: auto;
+            transition: filter 0.6s ease;
+        }
+
+        .chest-wrapper.items-visible .chest-image {
+            filter: blur(8px);
+        }
+
+        /* ITEMS */
+        .merch-items-container {
+            position: absolute;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: none;
+            flex-direction: row;
+            gap: 15px;
+            padding: 20px;
+            background: transparent;
+            z-index: 5;
+            flex-wrap: nowrap;
+            justify-content: center;
+            align-items: flex-start;
+            width: 100%;
+            pointer-events: none;
+        }
+
+        .merch-items-container.show {
+            display: flex;
+            animation: emergeFromChest 0.6s ease 0s both;
+            pointer-events: auto;
+        }
+
+        @keyframes emergeFromChest {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(30px) scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0) scale(1);
+            }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.3s ease;
+            z-index: 11;
+        }
+
+        .close-btn:hover {
+            background: #5568d3;
+        }
+
+        .merch-item {
+            flex: 0 0 auto;
+            width: 100px;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .merch-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .merch-item img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .merch-item h3 {
+            color: #333;
+            font-size: 0.75rem;
+            margin: 0;
+        }
+
+        .merch-item p {
+            color: #666;
+            font-size: 0.65rem;
+            margin: 0;
+            text-align: center;
+        }
+
+        .merch-item .price {
+            color: #667eea;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+                margin-bottom: 20px;
+            }
+
+            .chest-container {
+                transform: scale(1.5);
+                transform-origin: center top;
+            }
+
+            .chest-image {
+                max-width: 100%;
+                width: 100%;
+            }
+
+            .chest-wrapper {
+                overflow: visible;
+                width: 100%;
+            }
+
+            .merch-items-container {
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                gap: 10px;
+                padding: 15px 10px;
+            }
+
+            .merch-items-container {
+                will-change: transform, opacity;
+            }
+
+            .merch-items-container.show {
+                animation: emergeFromChestMobile 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0s both;
+            }
+
+            @keyframes emergeFromChestMobile {
+                0% {
+                    opacity: 0;
+                    transform: translate(-50%, -50%) scale(0.2);
+                }
+                100% {
+                    opacity: 1;
+                    transform: translate(-50%, -40%) scale(1);
+                }
+            }
+
+            .merch-item {
+                width: 90px;
+                padding: 8px;
+                gap: 5px;
+            }
+
+            .merch-item img {
+                height: 90px;
+            }
+
+            .merch-item h3 {
+                font-size: 0.7rem;
+            }
+
+            .merch-item p {
+                font-size: 0.6rem;
+            }
+
+            .merch-item .price {
+                font-size: 0.7rem;
+            }
+
+            .close-btn {
+                top: 5px;
+                right: 5px;
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .section-title {
+                font-size: 1.5rem;
+                margin-bottom: 15px;
+            }
+
+            .chest-container {
+                transform: scale(1.6);
+                transform-origin: center top;
+            }
+
+            .chest-image {
+                max-width: 100%;
+                width: 100%;
+            }
+
+            .merch-items-container {
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                gap: 8px;
+                padding: 12px 8px;
+            }
+
+            .merch-items-container {
+                will-change: transform, opacity;
+            }
+
+            @keyframes emergeFromChestMobile {
+                0% {
+                    opacity: 0;
+                    transform: translate(-50%, -50%) scale(0.2);
+                }
+                100% {
+                    opacity: 1;
+                    transform: translate(-50%, -40%) scale(1);
+                }
+            }
+
+            .merch-item {
+                width: 75px;
+                padding: 6px;
+            }
+
+            .merch-item img {
+                height: 75px;
+            }
+
+            .merch-item h3 {
+                font-size: 0.65rem;
+            }
+
+            .merch-item p {
+                font-size: 0.55rem;
+            }
+
+            .merch-item .price {
+                font-size: 0.65rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="merch-section">
+        <h1 class="section-title">Merchandise Store</h1>
+        
+        <div class="chest-wrapper">
+            <div class="merch-items-container" id="merchItemsContainer">
+                <button class="close-btn" id="closeBtn">×</button>
+                <div class="merch-item">
+                    <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop" alt="T-Shirt 1">
+                    <h3>Classic Logo Tee</h3>
+                    <p>Comfortable cotton t-shirt</p>
+                    <span class="price">$29.99</span>
+                </div>
+                <div class="merch-item">
+                    <img src="https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=400&h=400&fit=crop" alt="Hoodie">
+                    <h3>Premium Hoodie</h3>
+                    <p>Warm and cozy hoodie</p>
+                    <span class="price">$49.99</span>
+                </div>
+                <div class="merch-item">
+                    <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=400&fit=crop" alt="Cap">
+                    <h3>Signature Cap</h3>
+                    <p>Stylish cap with logo</p>
+                    <span class="price">$24.99</span>
+                </div>
+            </div>
+
+            <div class="chest-container" id="chestContainer">
+                <img class="chest-image" id="chestImage" src="chest1.png" alt="Treasure Chest">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const chestWrapper = document.querySelector('.chest-wrapper');
+        const chestContainer = document.getElementById('chestContainer');
+        const chestImage = document.getElementById('chestImage');
+        const merchItemsContainer = document.getElementById('merchItemsContainer');
+        const closeBtn = document.getElementById('closeBtn');
+
+        let isAnimating = false;
+        let currentFrame = 1;
+        let animationInterval = null;
+
+        // Preload all chest images for smoother animation
+        const chestImages = [];
+        for (let i = 1; i <= 7; i++) {
+            const img = new Image();
+            img.src = `chest${i}.png`;
+            chestImages.push(img);
+        }
+
+        function animateChestOpen() {
+            if (isAnimating) return;
+            isAnimating = true;
+            currentFrame = 1;
+            
+            animationInterval = setInterval(() => {
+                chestImage.src = `chest${currentFrame}.png`;
+                currentFrame++;
+                
+                if (currentFrame > 7) {
+                    clearInterval(animationInterval);
+                    isAnimating = false;
+                    chestContainer.classList.add('open');
+                    // Show items immediately when animation completes
+                    merchItemsContainer.classList.add('show');
+                    chestWrapper.classList.add('items-visible');
+                }
+            }, 70); // 70ms per frame = ~490ms total animation (smoother)
+        }
+
+        function animateChestClose() {
+            if (isAnimating) return;
+            isAnimating = true;
+            currentFrame = 7;
+            
+            animationInterval = setInterval(() => {
+                chestImage.src = `chest${currentFrame}.png`;
+                currentFrame--;
+                
+                if (currentFrame < 1) {
+                    clearInterval(animationInterval);
+                    isAnimating = false;
+                    chestContainer.classList.remove('open');
+                }
+            }, 70); // 70ms per frame = ~490ms total animation (smoother)
+        }
+
+        // Open chest
+        chestContainer.addEventListener('click', () => {
+            if (!chestContainer.classList.contains('open') && !isAnimating) {
+                animateChestOpen();
+            }
+        });
+
+        // Close chest
+        closeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (chestContainer.classList.contains('open') && !isAnimating) {
+                // Remove blur immediately when closing
+                chestWrapper.classList.remove('items-visible');
+                merchItemsContainer.classList.remove('show');
+                setTimeout(() => {
+                    animateChestClose();
+                }, 100);
+            }
+        });
+
+        // Close on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && chestContainer.classList.contains('open') && !isAnimating) {
+                closeBtn.click();
+            }
+        });
+    </script>
+</body>
+</html>
