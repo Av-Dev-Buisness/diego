@@ -2,41 +2,216 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Merchandise Chest</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a0000 0%, #330000 50%, #000000 100%);
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+            overflow-x: hidden;
+            overflow-y: hidden;
+            position: fixed;
+            width: 100%;
+            height: 100vh;
         }
 
-        .merch-section {
+        /* Logo Styles */
+        .logo {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 55px;
+            height: auto;
+            z-index: 1000000;
+            transition: all 0.3s ease;
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8)) 
+                    drop-shadow(0 0 15px rgba(255, 255, 255, 0.5))
+                    drop-shadow(0 0 25px rgba(255, 255, 255, 0.3));
+        }
+
+        @media (min-width: 769px) {
+            .logo {
+                left: 40px;
+                top: 20px;
+                transform: translateX(0);
+                width: 80px;
+                filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8)) 
+                        drop-shadow(0 0 20px rgba(255, 255, 255, 0.5))
+                        drop-shadow(0 0 30px rgba(255, 255, 255, 0.3));
+            }
+        }
+
+        /* 3D Cylinder Navigation */
+        .mobile-nav {
+            position: fixed;
+            top: 80px;
+            left: 0;
             width: 100%;
-            max-width: 1200px;
+            height: 65px;
+            background: linear-gradient(135deg, #cc0000 0%, #660000 100%);
+            z-index: 999999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            perspective: 1200px;
+            overflow: visible;
+        }
+
+        @media (min-width: 769px) {
+            .mobile-nav {
+                top: 0;
+                height: 100px;
+                background: linear-gradient(135deg, #990000 0%, #330000 100%);
+            }
+        }
+
+        .nav-cylinder {
+            position: relative;
+            width: 100%;
+            max-width: 300px;
+            height: 50px;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-item {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 140px;
+            height: 50px;
+            margin-left: -70px;
+            margin-top: -25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            backface-visibility: visible;
+        }
+
+        /* Position items around horizontal cylinder - tighter radius */
+        .nav-item:nth-child(1) { 
+            transform: rotateY(0deg) translateZ(120px);
+        }
+        .nav-item:nth-child(2) { 
+            transform: rotateY(90deg) translateZ(120px);
+        }
+        .nav-item:nth-child(3) { 
+            transform: rotateY(180deg) translateZ(120px);
+        }
+        .nav-item:nth-child(4) { 
+            transform: rotateY(270deg) translateZ(120px);
+        }
+
+        /* Rotate cylinder to show different sections - with opacity changes */
+        .nav-cylinder.section-0 { transform: rotateY(0deg); }
+        .nav-cylinder.section-0 .nav-item:nth-child(1) { opacity: 1; font-size: 22px; }
+        .nav-cylinder.section-0 .nav-item:nth-child(2) { opacity: 0.5; font-size: 16px; }
+        .nav-cylinder.section-0 .nav-item:nth-child(3) { opacity: 0.2; font-size: 14px; }
+        .nav-cylinder.section-0 .nav-item:nth-child(4) { opacity: 0.5; font-size: 16px; }
+
+        .nav-cylinder.section-1 { transform: rotateY(-90deg); }
+        .nav-cylinder.section-1 .nav-item:nth-child(1) { opacity: 0.5; font-size: 16px; }
+        .nav-cylinder.section-1 .nav-item:nth-child(2) { opacity: 1; font-size: 22px; }
+        .nav-cylinder.section-1 .nav-item:nth-child(3) { opacity: 0.5; font-size: 16px; }
+        .nav-cylinder.section-1 .nav-item:nth-child(4) { opacity: 0.2; font-size: 14px; }
+
+        .nav-cylinder.section-2 { transform: rotateY(-180deg); }
+        .nav-cylinder.section-2 .nav-item:nth-child(1) { opacity: 0.2; font-size: 14px; }
+        .nav-cylinder.section-2 .nav-item:nth-child(2) { opacity: 0.5; font-size: 16px; }
+        .nav-cylinder.section-2 .nav-item:nth-child(3) { opacity: 1; font-size: 22px; }
+        .nav-cylinder.section-2 .nav-item:nth-child(4) { opacity: 0.5; font-size: 16px; }
+
+        .nav-cylinder.section-3 { transform: rotateY(-270deg); }
+        .nav-cylinder.section-3 .nav-item:nth-child(1) { opacity: 0.5; font-size: 16px; }
+        .nav-cylinder.section-3 .nav-item:nth-child(2) { opacity: 0.2; font-size: 14px; }
+        .nav-cylinder.section-3 .nav-item:nth-child(3) { opacity: 0.5; font-size: 16px; }
+        .nav-cylinder.section-3 .nav-item:nth-child(4) { opacity: 1; font-size: 22px; }
+
+        .main-container {
+            display: flex;
+            width: 400%;
+            height: 100vh;
+            transition: transform 0.4s ease-out;
+            will-change: transform;
+        }
+
+        .section {
+            width: 25%;
+            height: 100vh;
+            flex-shrink: 0;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .section-content {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 155px 20px 40px 20px;
             text-align: center;
         }
 
-        .section-title {
-            color: white;
-            font-size: 2.5rem;
-            margin-bottom: 40px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        @media (min-width: 769px) {
+            .section-content {
+                padding: 120px 20px 40px 20px;
+            }
         }
 
+        .section-content h1 {
+            color: white;
+            font-size: clamp(2rem, 8vw, 4rem);
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .section-content p {
+            color: white;
+            font-size: clamp(1rem, 4vw, 1.5rem);
+            opacity: 0.95;
+            max-width: 600px;
+            line-height: 1.6;
+        }
+
+        .home-section {
+            background: linear-gradient(135deg, #1a0000 0%, #000000 100%);
+        }
+
+        .store-section {
+            background: linear-gradient(135deg, #330000 0%, #1a0000 100%);
+        }
+
+        .about-section {
+            background: linear-gradient(135deg, #990000 0%, #330000 100%);
+        }
+
+        .contact-section {
+            background: linear-gradient(135deg, #660000 0%, #000000 100%);
+        }
+
+        /* Chest Animation Styles */
         .chest-wrapper {
             position: relative;
             display: inline-block;
+            margin-top: 20px;
         }
 
         .chest-container {
@@ -47,12 +222,11 @@
 
         .chest-image {
             display: block;
-            max-width: 1100px;
-            width: 100%;
+            max-width: 700px;
+            width: 80vw;
             height: auto;
             user-select: none;
             pointer-events: none;
-            image-rendering: auto;
             transition: filter 0.6s ease;
         }
 
@@ -60,7 +234,6 @@
             filter: blur(8px);
         }
 
-        /* ITEMS */
         .merch-items-container {
             position: absolute;
             top: 60px;
@@ -68,27 +241,24 @@
             transform: translateX(-50%);
             display: none;
             flex-direction: row;
-            gap: 15px;
-            padding: 20px;
+            gap: 20px;
+            padding: 0;
             background: transparent;
-            z-index: 5;
+            z-index: 10;
             flex-wrap: nowrap;
             justify-content: center;
             align-items: flex-start;
-            width: 100%;
-            pointer-events: none;
         }
 
         .merch-items-container.show {
             display: flex;
-            animation: emergeFromChest 0.6s ease 0s both;
-            pointer-events: auto;
+            animation: popIn 0.5s ease-out;
         }
 
-        @keyframes emergeFromChest {
+        @keyframes popIn {
             from {
                 opacity: 0;
-                transform: translateX(-50%) translateY(30px) scale(0.8);
+                transform: translateX(-50%) translateY(20px) scale(0.9);
             }
             to {
                 opacity: 1;
@@ -98,261 +268,356 @@
 
         .close-btn {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            background: #667eea;
+            top: -10px;
+            right: -10px;
+            background: #cc0000;
             color: white;
             border: none;
-            padding: 8px 16px;
-            border-radius: 20px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
             cursor: pointer;
-            font-size: 0.9rem;
-            transition: background 0.3s ease;
+            font-size: 1.2rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
             z-index: 11;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
 
         .close-btn:hover {
-            background: #5568d3;
+            background: #ff0000;
+            transform: scale(1.1);
         }
 
         .merch-item {
             flex: 0 0 auto;
-            width: 100px;
-            padding: 8px;
+            width: 160px;
+            padding: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 6px;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 10px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s ease;
-        }
-
-        .merch-item:hover {
-            transform: translateY(-5px);
+            gap: 10px;
+            background: transparent;
+            border-radius: 0;
         }
 
         .merch-item img {
             width: 100%;
-            height: 100px;
+            height: 160px;
             object-fit: cover;
-            border-radius: 8px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .merch-item:hover img {
+            transform: translateY(-5px);
         }
 
         .merch-item h3 {
-            color: #333;
-            font-size: 0.75rem;
+            color: white;
+            font-size: 0.9rem;
             margin: 0;
-        }
-
-        .merch-item p {
-            color: #666;
-            font-size: 0.65rem;
-            margin: 0;
-            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
 
         .merch-item .price {
-            color: #667eea;
-            font-size: 0.8rem;
+            color: #ff3333;
+            font-size: 1.1rem;
             font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
         }
 
         @media (max-width: 768px) {
-            body {
-                padding: 10px;
+            .mobile-nav {
+                height: 70px;
+                perspective: 800px;
             }
-
-            .section-title {
-                font-size: 1.8rem;
-                margin-bottom: 20px;
+            
+            .nav-cylinder {
+                width: 100%;
+                max-width: 250px;
+                height: 45px;
             }
-
-            .chest-container {
-                transform: scale(1.5);
-                transform-origin: center top;
+            
+            .nav-item {
+                width: 120px;
+                height: 45px;
+                margin-left: -60px;
+                margin-top: -22px;
+                font-size: 15px;
+                letter-spacing: 2px;
             }
+            
+            .nav-item:nth-child(1) { 
+                transform: rotateY(0deg) translateZ(100px);
+            }
+            .nav-item:nth-child(2) { 
+                transform: rotateY(90deg) translateZ(100px);
+            }
+            .nav-item:nth-child(3) { 
+                transform: rotateY(180deg) translateZ(100px);
+            }
+            .nav-item:nth-child(4) { 
+                transform: rotateY(270deg) translateZ(100px);
+            }
+            
+            .nav-cylinder.section-0 .nav-item:nth-child(1) { opacity: 1; font-size: 19px; }
+            .nav-cylinder.section-0 .nav-item:nth-child(2) { opacity: 0.4; font-size: 14px; }
+            .nav-cylinder.section-0 .nav-item:nth-child(3) { opacity: 0.15; font-size: 12px; }
+            .nav-cylinder.section-0 .nav-item:nth-child(4) { opacity: 0.4; font-size: 14px; }
 
+            .nav-cylinder.section-1 .nav-item:nth-child(1) { opacity: 0.4; font-size: 14px; }
+            .nav-cylinder.section-1 .nav-item:nth-child(2) { opacity: 1; font-size: 19px; }
+            .nav-cylinder.section-1 .nav-item:nth-child(3) { opacity: 0.4; font-size: 14px; }
+            .nav-cylinder.section-1 .nav-item:nth-child(4) { opacity: 0.15; font-size: 12px; }
+
+            .nav-cylinder.section-2 .nav-item:nth-child(1) { opacity: 0.15; font-size: 12px; }
+            .nav-cylinder.section-2 .nav-item:nth-child(2) { opacity: 0.4; font-size: 14px; }
+            .nav-cylinder.section-2 .nav-item:nth-child(3) { opacity: 1; font-size: 19px; }
+            .nav-cylinder.section-2 .nav-item:nth-child(4) { opacity: 0.4; font-size: 14px; }
+
+            .nav-cylinder.section-3 .nav-item:nth-child(1) { opacity: 0.4; font-size: 14px; }
+            .nav-cylinder.section-3 .nav-item:nth-child(2) { opacity: 0.15; font-size: 12px; }
+            .nav-cylinder.section-3 .nav-item:nth-child(3) { opacity: 0.4; font-size: 14px; }
+            .nav-cylinder.section-3 .nav-item:nth-child(4) { opacity: 1; font-size: 19px; }
+            
             .chest-image {
-                max-width: 100%;
-                width: 100%;
+                max-width: 85vw;
             }
-
-            .chest-wrapper {
-                overflow: visible;
-                width: 100%;
-            }
-
+            
             .merch-items-container {
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
+                top: 15%;
+                transform: translateX(-50%);
                 gap: 10px;
-                padding: 15px 10px;
+                max-width: 95vw;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                padding: 10px 5px;
             }
-
-            .merch-items-container {
-                will-change: transform, opacity;
-            }
-
+            
             .merch-items-container.show {
-                animation: emergeFromChestMobile 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0s both;
+                animation: popInMobile 0.4s ease-out;
             }
-
-            @keyframes emergeFromChestMobile {
-                0% {
+            
+            @keyframes popInMobile {
+                from {
                     opacity: 0;
-                    transform: translate(-50%, -50%) scale(0.2);
+                    transform: translateX(-50%) translateY(20px) scale(0.9);
                 }
-                100% {
+                to {
                     opacity: 1;
-                    transform: translate(-50%, -40%) scale(1);
+                    transform: translateX(-50%) translateY(0) scale(1);
                 }
             }
-
+            
             .merch-item {
-                width: 90px;
-                padding: 8px;
-                gap: 5px;
+                width: 100px;
+                flex-shrink: 0;
             }
-
+            
             .merch-item img {
-                height: 90px;
+                height: 100px;
             }
-
+            
             .merch-item h3 {
                 font-size: 0.7rem;
             }
-
-            .merch-item p {
-                font-size: 0.6rem;
-            }
-
+            
             .merch-item .price {
-                font-size: 0.7rem;
+                font-size: 0.85rem;
             }
-
+            
             .close-btn {
                 top: 5px;
                 right: 5px;
-                padding: 6px 12px;
-                font-size: 0.8rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .section-title {
-                font-size: 1.5rem;
-                margin-bottom: 15px;
-            }
-
-            .chest-container {
-                transform: scale(1.6);
-                transform-origin: center top;
-            }
-
-            .chest-image {
-                max-width: 100%;
-                width: 100%;
-            }
-
-            .merch-items-container {
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                gap: 8px;
-                padding: 12px 8px;
-            }
-
-            .merch-items-container {
-                will-change: transform, opacity;
-            }
-
-            @keyframes emergeFromChestMobile {
-                0% {
-                    opacity: 0;
-                    transform: translate(-50%, -50%) scale(0.2);
-                }
-                100% {
-                    opacity: 1;
-                    transform: translate(-50%, -40%) scale(1);
-                }
-            }
-
-            .merch-item {
-                width: 75px;
-                padding: 6px;
-            }
-
-            .merch-item img {
-                height: 75px;
-            }
-
-            .merch-item h3 {
-                font-size: 0.65rem;
-            }
-
-            .merch-item p {
-                font-size: 0.55rem;
-            }
-
-            .merch-item .price {
-                font-size: 0.65rem;
+                width: 32px;
+                height: 32px;
+                font-size: 1rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="merch-section">
-        <h1 class="section-title">Merchandise Store</h1>
-        
-        <div class="chest-wrapper">
-            <div class="merch-items-container" id="merchItemsContainer">
-                <button class="close-btn" id="closeBtn">×</button>
-                <div class="merch-item">
-                    <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop" alt="T-Shirt 1">
-                    <h3>Classic Logo Tee</h3>
-                    <p>Comfortable cotton t-shirt</p>
-                    <span class="price">$29.99</span>
-                </div>
-                <div class="merch-item">
-                    <img src="https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=400&h=400&fit=crop" alt="Hoodie">
-                    <h3>Premium Hoodie</h3>
-                    <p>Warm and cozy hoodie</p>
-                    <span class="price">$49.99</span>
-                </div>
-                <div class="merch-item">
-                    <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=400&fit=crop" alt="Cap">
-                    <h3>Signature Cap</h3>
-                    <p>Stylish cap with logo</p>
-                    <span class="price">$24.99</span>
-                </div>
-            </div>
-
-            <div class="chest-container" id="chestContainer">
-                <img class="chest-image" id="chestImage" src="chest1.png" alt="Treasure Chest">
-            </div>
+    
+    <img src="logo.png" alt="Logo" class="logo">
+    
+    <nav class="mobile-nav">
+        <div class="nav-cylinder section-0" id="navCylinder">
+            <div class="nav-item">MUSIC</div>
+            <div class="nav-item">STORE</div>
+            <div class="nav-item">ABOUT</div>
+            <div class="nav-item">CONTACT</div>
         </div>
+    </nav>
+
+    <div class="main-container" id="container">
+        <section class="section home-section">
+            <div class="section-content">
+                <h1>Music</h1>
+                <p>Listen to our latest tracks and albums</p>
+                <p style="margin-top: 10px; opacity: 0.8;">Swipe left to explore →</p>
+            </div>
+        </section>
+
+        <section class="section store-section">
+            <div class="section-content">
+                <h1 style="margin-bottom: 30px;">Merchandise Store</h1>
+                
+                <div class="chest-wrapper" id="chestWrapper">
+                    <div class="merch-items-container" id="merchItems">
+                        <button class="close-btn" id="closeBtn">✕</button>
+                        <div class="merch-item">
+                            <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop" alt="T-Shirt">
+                            <h3>Logo Tee</h3>
+                            <span class="price">$29.99</span>
+                        </div>
+                        <div class="merch-item">
+                            <img src="https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=400&h=400&fit=crop" alt="Hoodie">
+                            <h3>Hoodie</h3>
+                            <span class="price">$49.99</span>
+                        </div>
+                        <div class="merch-item">
+                            <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=400&fit=crop" alt="Cap">
+                            <h3>Cap</h3>
+                            <span class="price">$24.99</span>
+                        </div>
+                    </div>
+
+                    <div class="chest-container" id="chestContainer">
+                        <img class="chest-image" id="chestImage" src="chest1 (1).png" alt="Treasure Chest">
+                    </div>
+                </div>
+                
+                <p style="margin-top: 20px; opacity: 0.8;">Click the chest to reveal items</p>
+            </div>
+        </section>
+
+        <section class="section about-section">
+            <div class="section-content">
+                <h1>About Us</h1>
+                <p>Learn more about our story and mission</p>
+            </div>
+        </section>
+
+        <section class="section contact-section">
+            <div class="section-content">
+                <h1>Contact</h1>
+                <p>Get in touch with us</p>
+            </div>
+        </section>
     </div>
 
     <script>
-        const chestWrapper = document.querySelector('.chest-wrapper');
+        const container = document.getElementById('container');
+        const navCylinder = document.getElementById('navCylinder');
+        
+        let current = 0;
+        let startX = 0;
+        let startTranslate = 0;
+        let isDragging = false;
+
+        function update(index) {
+            current = Math.max(0, Math.min(3, index));
+            container.style.transform = `translateX(-${current * 25}%)`;
+            navCylinder.className = `nav-cylinder section-${current}`;
+        }
+
+        container.addEventListener('touchstart', e => {
+            startX = e.touches[0].clientX;
+            startTranslate = current * 25;
+            isDragging = true;
+            container.style.transition = 'none';
+        }, { passive: true });
+
+        container.addEventListener('touchmove', e => {
+            if (!isDragging) return;
+            const x = e.touches[0].clientX;
+            const diff = startX - x;
+            const percent = (diff / window.innerWidth) * 25;
+            const newTranslate = Math.max(0, Math.min(75, startTranslate + percent));
+            container.style.transform = `translateX(-${newTranslate}%)`;
+        }, { passive: true });
+
+        container.addEventListener('touchend', e => {
+            if (!isDragging) return;
+            isDragging = false;
+            container.style.transition = 'transform 0.4s ease-out';
+            
+            const endX = e.changedTouches[0].clientX;
+            const diff = startX - endX;
+            
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) {
+                    update(current + 1);
+                } else {
+                    update(current - 1);
+                }
+            } else {
+                update(current);
+            }
+        }, { passive: true });
+
+        // Desktop mouse support
+        container.addEventListener('mousedown', e => {
+            startX = e.clientX;
+            startTranslate = current * 25;
+            isDragging = true;
+            container.style.transition = 'none';
+        });
+
+        document.addEventListener('mousemove', e => {
+            if (!isDragging) return;
+            const diff = startX - e.clientX;
+            const percent = (diff / window.innerWidth) * 25;
+            const newTranslate = Math.max(0, Math.min(75, startTranslate + percent));
+            container.style.transform = `translateX(-${newTranslate}%)`;
+        });
+
+        document.addEventListener('mouseup', e => {
+            if (!isDragging) return;
+            isDragging = false;
+            container.style.transition = 'transform 0.4s ease-out';
+            
+            const diff = startX - e.clientX;
+            
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) {
+                    update(current + 1);
+                } else {
+                    update(current - 1);
+                }
+            } else {
+                update(current);
+            }
+        });
+
+        // Chest Animation
+        const chestWrapper = document.getElementById('chestWrapper');
         const chestContainer = document.getElementById('chestContainer');
         const chestImage = document.getElementById('chestImage');
-        const merchItemsContainer = document.getElementById('merchItemsContainer');
+        const merchItems = document.getElementById('merchItems');
         const closeBtn = document.getElementById('closeBtn');
 
         let isAnimating = false;
         let currentFrame = 1;
         let animationInterval = null;
+        const totalFrames = 160;
 
-        // Preload all chest images for smoother animation
-        const chestImages = [];
-        for (let i = 1; i <= 7; i++) {
+        function formatFrameNumber(num) {
+            return String(num).padStart(3, '0');
+        }
+
+        // Preload frames
+        const chestImages = [new Image()];
+        chestImages[0].src = 'chest1 (1).png';
+        for (let i = 2; i <= totalFrames; i++) {
             const img = new Image();
-            img.src = `chest${i}.png`;
+            img.src = `ezgif-frame-${formatFrameNumber(i)}.png`;
             chestImages.push(img);
         }
 
@@ -362,63 +627,59 @@
             currentFrame = 1;
             
             animationInterval = setInterval(() => {
-                chestImage.src = `chest${currentFrame}.png`;
+                if (currentFrame === 1) {
+                    chestImage.src = 'chest1 (1).png';
+                } else {
+                    chestImage.src = `ezgif-frame-${formatFrameNumber(currentFrame)}.png`;
+                }
                 currentFrame++;
                 
-                if (currentFrame > 7) {
+                if (currentFrame > totalFrames) {
                     clearInterval(animationInterval);
                     isAnimating = false;
                     chestContainer.classList.add('open');
-                    // Show items immediately when animation completes
-                    merchItemsContainer.classList.add('show');
+                    merchItems.classList.add('show');
                     chestWrapper.classList.add('items-visible');
                 }
-            }, 70); // 70ms per frame = ~490ms total animation (smoother)
+            }, 30);
         }
 
         function animateChestClose() {
             if (isAnimating) return;
             isAnimating = true;
-            currentFrame = 7;
+            currentFrame = totalFrames;
             
             animationInterval = setInterval(() => {
-                chestImage.src = `chest${currentFrame}.png`;
-                currentFrame--;
-                
-                if (currentFrame < 1) {
+                if (currentFrame === 1) {
+                    chestImage.src = 'chest1 (1).png';
                     clearInterval(animationInterval);
                     isAnimating = false;
                     chestContainer.classList.remove('open');
+                } else {
+                    chestImage.src = `ezgif-frame-${formatFrameNumber(currentFrame)}.png`;
                 }
-            }, 70); // 70ms per frame = ~490ms total animation (smoother)
+                currentFrame--;
+            }, 30);
         }
 
-        // Open chest
         chestContainer.addEventListener('click', () => {
             if (!chestContainer.classList.contains('open') && !isAnimating) {
                 animateChestOpen();
             }
         });
 
-        // Close chest
         closeBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             if (chestContainer.classList.contains('open') && !isAnimating) {
-                // Remove blur immediately when closing
                 chestWrapper.classList.remove('items-visible');
-                merchItemsContainer.classList.remove('show');
+                merchItems.classList.remove('show');
                 setTimeout(() => {
                     animateChestClose();
                 }, 100);
             }
         });
 
-        // Close on escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && chestContainer.classList.contains('open') && !isAnimating) {
-                closeBtn.click();
-            }
-        });
+        update(0);
     </script>
 </body>
 </html>
