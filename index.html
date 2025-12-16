@@ -4,7 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Merchandise Chest</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
     <style>
+        @font-face {
+            font-family: 'Piedra';
+            src: url('Piedra-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -13,41 +24,76 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #1a0000 0%, #330000 50%, #000000 100%);
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            background: radial-gradient(ellipse at top, #1a0000 0%, #0d0000 50%, #000000 100%);
             min-height: 100vh;
             overflow-x: hidden;
             overflow-y: hidden;
             position: fixed;
             width: 100%;
             height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Piedra', cursive;
+            font-style: normal;
+            font-weight: normal;
+        }
+
+        p {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         /* Logo Styles */
         .logo {
             position: fixed;
-            top: 0;
+            top: 40px;
             left: 50%;
-            transform: translateX(-50%);
-            width: 55px;
+            transform: translate(-50%, -50%);
+            width: 110px;
             height: auto;
             z-index: 1000000;
-            transition: all 0.3s ease;
-            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8)) 
-                    drop-shadow(0 0 15px rgba(255, 255, 255, 0.5))
-                    drop-shadow(0 0 25px rgba(255, 255, 255, 0.3));
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.9)) 
+                    drop-shadow(0 0 25px rgba(255, 255, 255, 0.6))
+                    drop-shadow(0 0 40px rgba(255, 255, 255, 0.3));
         }
 
         @media (min-width: 769px) {
             .logo {
-                left: 40px;
-                top: 20px;
-                transform: translateX(0);
-                width: 80px;
-                filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8)) 
-                        drop-shadow(0 0 20px rgba(255, 255, 255, 0.5))
-                        drop-shadow(0 0 30px rgba(255, 255, 255, 0.3));
+                left: 50px;
+                top: 50px;
+                transform: translate(-50%, -50%);
+                width: 100px;
+                filter: drop-shadow(0 0 18px rgba(255, 255, 255, 1)) 
+                        drop-shadow(0 0 30px rgba(255, 255, 255, 0.7))
+                        drop-shadow(0 0 50px rgba(255, 255, 255, 0.4));
             }
+            
+            .logo:hover {
+                transform: translate(-50%, -50%) scale(1.08);
+                filter: drop-shadow(0 0 25px rgba(255, 255, 255, 1)) 
+                        drop-shadow(0 0 40px rgba(255, 255, 255, 0.8))
+                        drop-shadow(0 0 60px rgba(255, 255, 255, 0.5));
+            }
+        }
+
+        /* Logo Background Area */
+        .logo-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: radial-gradient(ellipse at top, #1a0000 0%, #0d0000 100%);
+            z-index: 999998;
         }
 
         /* 3D Cylinder Navigation */
@@ -57,21 +103,28 @@
             left: 0;
             width: 100%;
             height: 65px;
-            background: linear-gradient(135deg, #cc0000 0%, #660000 100%);
+            background: linear-gradient(135deg, rgba(153, 0, 0, 0.95) 0%, rgba(77, 0, 0, 0.95) 100%);
+            backdrop-filter: blur(15px);
             z-index: 999999;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), 0 0 40px rgba(153, 0, 0, 0.3);
             perspective: 1200px;
             overflow: visible;
+            border-bottom: 1px solid rgba(255, 0, 0, 0.2);
         }
 
         @media (min-width: 769px) {
+            .logo-bg {
+                display: none;
+            }
+
             .mobile-nav {
                 top: 0;
                 height: 100px;
-                background: linear-gradient(135deg, #990000 0%, #330000 100%);
+                background: linear-gradient(135deg, rgba(102, 0, 0, 0.95) 0%, rgba(26, 0, 0, 0.95) 100%);
+                box-shadow: 0 4px 30px rgba(0, 0, 0, 0.7), 0 0 50px rgba(102, 0, 0, 0.4);
             }
         }
 
@@ -88,21 +141,24 @@
             position: absolute;
             left: 50%;
             top: 50%;
-            width: 140px;
+            width: 160px;
             height: 50px;
-            margin-left: -70px;
+            margin-left: -80px;
             margin-top: -25px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 18px;
-            font-weight: 900;
+            font-size: 22px;
+            font-weight: normal;
             text-transform: uppercase;
-            letter-spacing: 3px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            letter-spacing: 2px;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9), 0 0 30px rgba(255, 0, 0, 0.5);
             transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             backface-visibility: visible;
+            font-family: 'Piedra', cursive;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         /* Position items around horizontal cylinder - tighter radius */
@@ -121,28 +177,28 @@
 
         /* Rotate cylinder to show different sections - with opacity changes */
         .nav-cylinder.section-0 { transform: rotateY(0deg); }
-        .nav-cylinder.section-0 .nav-item:nth-child(1) { opacity: 1; font-size: 22px; }
-        .nav-cylinder.section-0 .nav-item:nth-child(2) { opacity: 0.5; font-size: 16px; }
-        .nav-cylinder.section-0 .nav-item:nth-child(3) { opacity: 0.2; font-size: 14px; }
-        .nav-cylinder.section-0 .nav-item:nth-child(4) { opacity: 0.5; font-size: 16px; }
+        .nav-cylinder.section-0 .nav-item:nth-child(1) { opacity: 1; font-size: 26px; }
+        .nav-cylinder.section-0 .nav-item:nth-child(2) { opacity: 0.5; font-size: 18px; }
+        .nav-cylinder.section-0 .nav-item:nth-child(3) { opacity: 0.2; font-size: 16px; }
+        .nav-cylinder.section-0 .nav-item:nth-child(4) { opacity: 0.5; font-size: 18px; }
 
         .nav-cylinder.section-1 { transform: rotateY(-90deg); }
-        .nav-cylinder.section-1 .nav-item:nth-child(1) { opacity: 0.5; font-size: 16px; }
-        .nav-cylinder.section-1 .nav-item:nth-child(2) { opacity: 1; font-size: 22px; }
-        .nav-cylinder.section-1 .nav-item:nth-child(3) { opacity: 0.5; font-size: 16px; }
-        .nav-cylinder.section-1 .nav-item:nth-child(4) { opacity: 0.2; font-size: 14px; }
+        .nav-cylinder.section-1 .nav-item:nth-child(1) { opacity: 0.5; font-size: 18px; }
+        .nav-cylinder.section-1 .nav-item:nth-child(2) { opacity: 1; font-size: 26px; }
+        .nav-cylinder.section-1 .nav-item:nth-child(3) { opacity: 0.5; font-size: 18px; }
+        .nav-cylinder.section-1 .nav-item:nth-child(4) { opacity: 0.2; font-size: 16px; }
 
         .nav-cylinder.section-2 { transform: rotateY(-180deg); }
-        .nav-cylinder.section-2 .nav-item:nth-child(1) { opacity: 0.2; font-size: 14px; }
-        .nav-cylinder.section-2 .nav-item:nth-child(2) { opacity: 0.5; font-size: 16px; }
-        .nav-cylinder.section-2 .nav-item:nth-child(3) { opacity: 1; font-size: 22px; }
-        .nav-cylinder.section-2 .nav-item:nth-child(4) { opacity: 0.5; font-size: 16px; }
+        .nav-cylinder.section-2 .nav-item:nth-child(1) { opacity: 0.2; font-size: 16px; }
+        .nav-cylinder.section-2 .nav-item:nth-child(2) { opacity: 0.5; font-size: 18px; }
+        .nav-cylinder.section-2 .nav-item:nth-child(3) { opacity: 1; font-size: 26px; }
+        .nav-cylinder.section-2 .nav-item:nth-child(4) { opacity: 0.5; font-size: 18px; }
 
         .nav-cylinder.section-3 { transform: rotateY(-270deg); }
-        .nav-cylinder.section-3 .nav-item:nth-child(1) { opacity: 0.5; font-size: 16px; }
-        .nav-cylinder.section-3 .nav-item:nth-child(2) { opacity: 0.2; font-size: 14px; }
-        .nav-cylinder.section-3 .nav-item:nth-child(3) { opacity: 0.5; font-size: 16px; }
-        .nav-cylinder.section-3 .nav-item:nth-child(4) { opacity: 1; font-size: 22px; }
+        .nav-cylinder.section-3 .nav-item:nth-child(1) { opacity: 0.5; font-size: 18px; }
+        .nav-cylinder.section-3 .nav-item:nth-child(2) { opacity: 0.2; font-size: 16px; }
+        .nav-cylinder.section-3 .nav-item:nth-child(3) { opacity: 0.5; font-size: 18px; }
+        .nav-cylinder.section-3 .nav-item:nth-child(4) { opacity: 1; font-size: 26px; }
 
         .main-container {
             display: flex;
@@ -178,21 +234,27 @@
 
         .section-content h1 {
             color: white;
-            font-size: clamp(2rem, 8vw, 4rem);
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            margin-bottom: 30px;
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.7), 0 0 40px rgba(255, 0, 0, 0.4);
+            font-family: 'Piedra', cursive;
+            font-weight: normal;
+            letter-spacing: 3px;
         }
 
         .section-content p {
-            color: white;
-            font-size: clamp(1rem, 4vw, 1.5rem);
-            opacity: 0.95;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: clamp(1rem, 4vw, 1.4rem);
             max-width: 600px;
-            line-height: 1.6;
+            line-height: 1.9;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         .home-section {
-            background: linear-gradient(135deg, #1a0000 0%, #000000 100%);
+            background: radial-gradient(ellipse at center, #1a0000 0%, #0d0000 50%, #000000 100%);
         }
 
         /* Latest Song */
@@ -200,45 +262,81 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 20px;
+            gap: 25px;
             margin-top: 40px;
-            transition: transform 0.3s ease;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .latest-song:hover {
-            transform: translateY(-10px);
+            transform: translateY(-15px);
         }
 
         .song-cover {
-            width: 300px;
-            height: 300px;
+            width: 320px;
+            height: 320px;
             object-fit: cover;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(255, 0, 0, 0.5);
-            transition: all 0.3s ease;
+            border-radius: 20px;
+            box-shadow: 0 15px 50px rgba(255, 0, 0, 0.6), 
+                        0 5px 15px rgba(0, 0, 0, 0.7),
+                        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
         }
 
         .latest-song:hover .song-cover {
-            box-shadow: 0 15px 50px rgba(255, 0, 0, 0.7);
+            box-shadow: 0 20px 70px rgba(255, 0, 0, 0.8), 
+                        0 8px 25px rgba(0, 0, 0, 0.9),
+                        inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+            transform: scale(1.02);
         }
 
         .song-title {
             color: white;
-            font-size: 1.8rem;
-            font-weight: bold;
+            font-size: 2rem;
+            font-weight: normal;
             text-align: center;
             margin: 0;
-            text-shadow: 2px 2px 6px rgba(0,0,0,0.9);
+            text-shadow: 0 3px 10px rgba(0, 0, 0, 0.9), 0 0 30px rgba(255, 0, 0, 0.4);
+            font-family: 'Piedra', cursive;
+            letter-spacing: 2px;
         }
 
         .song-status {
-            color: #ff3333;
-            font-size: 1.1rem;
-            font-weight: 600;
+            color: #ff4444;
+            font-size: 1rem;
+            font-weight: normal;
             text-transform: uppercase;
-            letter-spacing: 3px;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+            letter-spacing: 5px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9), 0 0 20px rgba(255, 0, 0, 0.6);
+            font-family: 'Piedra', cursive;
+            padding: 8px 20px;
+            border: 1px solid rgba(255, 68, 68, 0.3);
+            border-radius: 30px;
+            background: rgba(255, 0, 0, 0.05);
+        }
+
+        /* Section Divider */
+        .section-divider {
+            width: 80%;
+            max-width: 600px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 51, 51, 0.4) 30%, rgba(255, 51, 51, 0.8) 50%, rgba(255, 51, 51, 0.4) 70%, transparent 100%);
+            margin: 70px auto 70px auto;
+            position: relative;
+            box-shadow: 0 0 20px rgba(255, 51, 51, 0.3);
+        }
+
+        .section-divider::before {
+            content: '♫';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(ellipse, #1a0000 40%, transparent 70%);
+            padding: 12px 24px;
+            color: #ff3333;
+            font-size: 26px;
+            text-shadow: 0 0 20px rgba(255, 51, 51, 0.8);
         }
 
         /* Carousel Section */
@@ -247,10 +345,11 @@
             align-items: center;
             justify-content: center;
             gap: 50px;
-            margin-top: 60px;
+            margin-top: 0;
             width: 100%;
             max-width: 1200px;
             position: relative;
+            padding-top: 20px;
         }
 
         .animated-guy {
@@ -258,7 +357,7 @@
             height: 100px;
             font-size: 80px;
             flex-shrink: 0;
-            filter: drop-shadow(0 5px 15px rgba(255, 0, 0, 0.5));
+            filter: drop-shadow(0 8px 20px rgba(255, 0, 0, 0.6));
             user-select: none;
         }
 
@@ -292,7 +391,7 @@
             position: relative;
             width: 280px;
             overflow: hidden;
-            padding: 20px 0;
+            padding: 30px 0;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -311,67 +410,82 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 12px;
+            gap: 15px;
             cursor: pointer;
-            transition: transform 0.3s ease;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .carousel-song:hover {
-            transform: translateY(-8px);
+            transform: translateY(-12px);
         }
 
         .carousel-cover {
-            width: 220px;
-            height: 220px;
+            width: 230px;
+            height: 230px;
             object-fit: cover;
-            border-radius: 15px;
-            box-shadow: 0 8px 30px rgba(255, 0, 0, 0.5);
-            transition: all 0.3s ease;
+            border-radius: 18px;
+            box-shadow: 0 10px 40px rgba(255, 0, 0, 0.5), 
+                        0 4px 12px rgba(0, 0, 0, 0.6),
+                        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .carousel-song:hover .carousel-cover {
-            box-shadow: 0 12px 40px rgba(255, 0, 0, 0.7);
+            box-shadow: 0 15px 55px rgba(255, 0, 0, 0.7), 
+                        0 6px 18px rgba(0, 0, 0, 0.8),
+                        inset 0 0 0 1px rgba(255, 255, 255, 0.15);
+            transform: scale(1.03);
         }
 
         .carousel-title {
             color: white;
-            font-size: 1.2rem;
-            font-weight: bold;
+            font-size: 1.25rem;
+            font-weight: normal;
             text-align: center;
             margin: 0;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9), 0 0 25px rgba(255, 0, 0, 0.3);
+            font-family: 'Piedra', cursive;
+            letter-spacing: 1px;
         }
 
         .carousel-artist {
-            color: #ff6666;
+            color: rgba(255, 102, 102, 0.9);
             font-size: 0.95rem;
             text-align: center;
             margin: 0;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+            text-shadow: 0 1px 5px rgba(0, 0, 0, 0.8);
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         .carousel-nav {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background: rgba(204, 0, 0, 0.8);
-            border: none;
+            background: rgba(153, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 0, 0, 0.3);
             color: white;
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
-            transition: all 0.3s ease;
+            font-size: 1.4rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 10;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 0, 0, 0.3);
         }
 
         .carousel-nav:hover {
-            background: rgba(255, 0, 0, 0.9);
-            transform: translateY(-50%) scale(1.1);
+            background: rgba(204, 0, 0, 0.95);
+            border-color: rgba(255, 0, 0, 0.5);
+            transform: translateY(-50%) scale(1.15);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 0, 0, 0.5);
         }
 
         .carousel-nav.prev {
@@ -383,15 +497,15 @@
         }
 
         .store-section {
-            background: linear-gradient(135deg, #330000 0%, #1a0000 100%);
+            background: radial-gradient(ellipse at center, #330000 0%, #1a0000 50%, #000000 100%);
         }
 
         .about-section {
-            background: linear-gradient(135deg, #990000 0%, #330000 100%);
+            background: radial-gradient(ellipse at center, #990000 0%, #330000 50%, #000000 100%);
         }
 
         .contact-section {
-            background: linear-gradient(135deg, #660000 0%, #000000 100%);
+            background: radial-gradient(ellipse at center, #660000 0%, #330000 50%, #000000 100%);
         }
 
         /* Chest Animation Styles */
@@ -414,11 +528,17 @@
             height: auto;
             user-select: none;
             pointer-events: none;
-            transition: filter 0.6s ease;
+            transition: filter 0.6s ease, transform 0.4s ease;
+            filter: drop-shadow(0 10px 40px rgba(0, 0, 0, 0.6));
+        }
+
+        .chest-container:hover .chest-image {
+            transform: scale(1.02);
+            filter: drop-shadow(0 15px 50px rgba(255, 0, 0, 0.4));
         }
 
         .chest-wrapper.items-visible .chest-image {
-            filter: blur(8px);
+            filter: blur(8px) brightness(0.7);
         }
 
         .merch-items-container {
@@ -457,26 +577,28 @@
             position: absolute;
             top: -10px;
             right: -10px;
-            background: #cc0000;
+            background: linear-gradient(135deg, #cc0000 0%, #990000 100%);
             color: white;
-            border: none;
-            width: 36px;
-            height: 36px;
+            border: 2px solid rgba(255, 0, 0, 0.3);
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             cursor: pointer;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: bold;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 11;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6), 0 0 25px rgba(255, 0, 0, 0.4);
         }
 
         .close-btn:hover {
-            background: #ff0000;
-            transform: scale(1.1);
+            background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
+            border-color: rgba(255, 0, 0, 0.5);
+            transform: scale(1.15) rotate(90deg);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7), 0 0 35px rgba(255, 0, 0, 0.6);
         }
 
         .merch-item {
@@ -495,47 +617,68 @@
             width: 100%;
             height: 160px;
             object-fit: cover;
-            border-radius: 12px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-            transition: transform 0.3s ease;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 
+                        0 4px 10px rgba(0, 0, 0, 0.4),
+                        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .merch-item:hover img {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(255, 0, 0, 0.4), 
+                        0 6px 15px rgba(0, 0, 0, 0.6),
+                        inset 0 0 0 1px rgba(255, 255, 255, 0.15);
         }
 
         .merch-item h3 {
             color: white;
             font-size: 0.9rem;
             margin: 0;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+            font-family: 'Piedra', cursive;
+            font-weight: normal;
+            letter-spacing: 1px;
         }
 
         .merch-item .price {
-            color: #ff3333;
+            color: #ff4444;
             font-size: 1.1rem;
-            font-weight: bold;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            font-weight: normal;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9), 0 0 20px rgba(255, 0, 0, 0.5);
+            font-family: 'Piedra', cursive;
+            letter-spacing: 1px;
         }
 
         @media (max-width: 768px) {
+            .section-divider {
+                width: 90%;
+                margin: 40px auto 40px auto;
+            }
+
+            .section-divider::before {
+                font-size: 20px;
+                padding: 8px 15px;
+            }
+
             .latest-song {
                 margin-top: 30px;
                 gap: 15px;
             }
 
             .song-cover {
-                width: 220px;
-                height: 220px;
+                width: 240px;
+                height: 240px;
             }
 
             .song-title {
-                font-size: 1.3rem;
+                font-size: 1.5rem;
             }
 
             .song-status {
-                font-size: 0.85rem;
-                letter-spacing: 2px;
+                font-size: 0.8rem;
+                letter-spacing: 3px;
+                padding: 6px 16px;
             }
 
             .carousel-section {
@@ -587,16 +730,16 @@
             }
 
             .carousel-cover {
-                width: 170px;
-                height: 170px;
+                width: 180px;
+                height: 180px;
             }
 
             .carousel-title {
-                font-size: 0.95rem;
+                font-size: 1rem;
             }
 
             .carousel-artist {
-                font-size: 0.75rem;
+                font-size: 0.8rem;
             }
 
             .carousel-nav {
@@ -715,6 +858,7 @@
 </head>
 <body>
     
+    <div class="logo-bg"></div>
     <img src="logo.png" alt="Logo" class="logo">
     
     <nav class="mobile-nav">
@@ -737,6 +881,8 @@
                     <h3 class="song-title">Midnight Dreams</h3>
                     <p class="song-status">Out Now</p>
                 </div>
+                
+                <div class="section-divider"></div>
                 
                 <div class="carousel-section">
                     <div class="animated-guy guy-left">😎</div>
@@ -840,6 +986,10 @@
         function update(index) {
             current = Math.max(0, Math.min(3, index));
             container.style.transform = `translateX(-${current * 25}%)`;
+            
+            // Calculate correct rotation for centered nav item
+            const rotation = current * -90;
+            navCylinder.style.transform = `rotateY(${rotation}deg)`;
             navCylinder.className = `nav-cylinder section-${current}`;
         }
 
@@ -848,6 +998,7 @@
             startTranslate = current * 25;
             isDragging = true;
             container.style.transition = 'none';
+            navCylinder.style.transition = 'none';
         }, { passive: true });
 
         container.addEventListener('touchmove', e => {
@@ -857,12 +1008,17 @@
             const percent = (diff / window.innerWidth) * 25;
             const newTranslate = Math.max(0, Math.min(75, startTranslate + percent));
             container.style.transform = `translateX(-${newTranslate}%)`;
+            
+            // Rotate nav cylinder in sync with swipe
+            const rotation = (newTranslate / 25) * -90;
+            navCylinder.style.transform = `rotateY(${rotation}deg)`;
         }, { passive: true });
 
         container.addEventListener('touchend', e => {
             if (!isDragging) return;
             isDragging = false;
             container.style.transition = 'transform 0.4s ease-out';
+            navCylinder.style.transition = 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
             
             const endX = e.changedTouches[0].clientX;
             const diff = startX - endX;
@@ -884,6 +1040,7 @@
             startTranslate = current * 25;
             isDragging = true;
             container.style.transition = 'none';
+            navCylinder.style.transition = 'none';
         });
 
         document.addEventListener('mousemove', e => {
@@ -892,12 +1049,17 @@
             const percent = (diff / window.innerWidth) * 25;
             const newTranslate = Math.max(0, Math.min(75, startTranslate + percent));
             container.style.transform = `translateX(-${newTranslate}%)`;
+            
+            // Rotate nav cylinder in sync with drag
+            const rotation = (newTranslate / 25) * -90;
+            navCylinder.style.transform = `rotateY(${rotation}deg)`;
         });
 
         document.addEventListener('mouseup', e => {
             if (!isDragging) return;
             isDragging = false;
             container.style.transition = 'transform 0.4s ease-out';
+            navCylinder.style.transition = 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
             
             const diff = startX - e.clientX;
             
@@ -1000,32 +1162,39 @@
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
         
-        let carouselPosition = 0;
-        const scrollAmount = 200;
+        let carouselIndex = 0;
+        const carouselSongs = carouselTrack ? carouselTrack.querySelectorAll('.carousel-song') : [];
+        const totalSongs = carouselSongs.length;
+
+        function updateCarousel(index) {
+            if (!carouselTrack) return;
+            carouselIndex = Math.max(0, Math.min(totalSongs - 1, index));
+            
+            // Get the width of one song card
+            const songWidth = carouselSongs[0] ? carouselSongs[0].offsetWidth : 280;
+            const position = -carouselIndex * songWidth;
+            
+            carouselTrack.style.transition = 'transform 0.4s ease-out';
+            carouselTrack.style.transform = `translateX(${position}px)`;
+        }
 
         if (prevBtn && nextBtn && carouselTrack) {
             prevBtn.addEventListener('click', () => {
-                carouselPosition += scrollAmount;
-                if (carouselPosition > 0) carouselPosition = 0;
-                carouselTrack.style.transform = `translateX(${carouselPosition}px)`;
+                updateCarousel(carouselIndex - 1);
             });
 
             nextBtn.addEventListener('click', () => {
-                const maxScroll = -(carouselTrack.scrollWidth - carouselTrack.parentElement.clientWidth);
-                carouselPosition -= scrollAmount;
-                if (carouselPosition < maxScroll) carouselPosition = maxScroll;
-                carouselTrack.style.transform = `translateX(${carouselPosition}px)`;
+                updateCarousel(carouselIndex + 1);
             });
 
-            // Touch swipe for carousel
+            // Touch swipe for carousel - snap to songs
             let carouselStartX = 0;
-            let carouselStartTranslate = 0;
             let isCarouselDragging = false;
+            let carouselTempPosition = 0;
 
             carouselTrack.addEventListener('touchstart', (e) => {
                 e.stopPropagation();
                 carouselStartX = e.touches[0].clientX;
-                carouselStartTranslate = carouselPosition;
                 isCarouselDragging = true;
                 carouselTrack.style.transition = 'none';
             }, { passive: true });
@@ -1033,23 +1202,38 @@
             carouselTrack.addEventListener('touchmove', (e) => {
                 if (!isCarouselDragging) return;
                 e.stopPropagation();
+                
                 const currentX = e.touches[0].clientX;
                 const diff = currentX - carouselStartX;
-                carouselPosition = carouselStartTranslate + diff;
-                carouselTrack.style.transform = `translateX(${carouselPosition}px)`;
+                const songWidth = carouselSongs[0] ? carouselSongs[0].offsetWidth : 280;
+                const currentPosition = -carouselIndex * songWidth;
+                carouselTempPosition = currentPosition + diff;
+                
+                carouselTrack.style.transform = `translateX(${carouselTempPosition}px)`;
             }, { passive: true });
 
             carouselTrack.addEventListener('touchend', (e) => {
                 if (!isCarouselDragging) return;
                 e.stopPropagation();
                 isCarouselDragging = false;
-                carouselTrack.style.transition = 'transform 0.4s ease-out';
                 
-                // Snap to boundaries
-                const maxScroll = -(carouselTrack.scrollWidth - carouselTrack.parentElement.clientWidth);
-                if (carouselPosition > 0) carouselPosition = 0;
-                if (carouselPosition < maxScroll) carouselPosition = maxScroll;
-                carouselTrack.style.transform = `translateX(${carouselPosition}px)`;
+                const endX = e.changedTouches[0].clientX;
+                const swipeDiff = endX - carouselStartX;
+                const threshold = 50; // Minimum swipe distance
+                
+                // Determine which song to snap to
+                if (Math.abs(swipeDiff) > threshold) {
+                    if (swipeDiff > 0) {
+                        // Swiped right - previous song
+                        updateCarousel(carouselIndex - 1);
+                    } else {
+                        // Swiped left - next song
+                        updateCarousel(carouselIndex + 1);
+                    }
+                } else {
+                    // Not enough swipe - snap back to current
+                    updateCarousel(carouselIndex);
+                }
             }, { passive: true });
         }
 
